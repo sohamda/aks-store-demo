@@ -37,7 +37,7 @@ main                          ← Clean repo, zero Copilot/DevSecOps config (sta
 - Architecture overview (8 polyglot microservices, event-driven)
 - Key point: repo has **zero DevSecOps** — no Dependabot, no CodeQL, no scanning, no Copilot config
 - Explain branch strategy: work on `main`, checkpoint branches are your safety net
-- Confirm forks ready, Actions enabled, Coding Agent enabled
+- Confirm forks ready, Actions enabled, Coding Agent enabled, `PAT_TOKEN` secret set
 
 ### Module 1: Copilot Chat — Security Assessment (10 min) — `main`
 
@@ -487,6 +487,7 @@ By now, Copilot should have PRs from auto-created issues.
 - [ ] Fork the repo to your own GitHub account
 - [ ] Enable GitHub Actions on the fork (Settings → Actions → General → Allow all actions)
 - [ ] Verify Copilot is available on github.com (open Copilot Chat on the repo page)
+- [ ] Create a `PAT_TOKEN` repo secret (Fine-grained PAT with Issues Read & Write permission) — required for auto-assigning Copilot to issues in Module 4
 
 ## Risks & Mitigations
 

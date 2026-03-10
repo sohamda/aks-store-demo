@@ -3,12 +3,14 @@
 Go to `https://github.com/sohamda/aks-store-demo/settings`:
 
 1. **Settings → Actions → General** → "Allow all actions and reusable workflows" → Save
-2. **Settings → Code security** → Enable:
+2. **Settings → Advanced Security** → Enable:
    - Dependabot alerts ✅
-   - Dependabot security updates ✅
    - Secret scanning ✅
-   - Push protection ✅
-3. **Settings → Copilot → Coding agent** → Ensure it's enabled (this is at **org level**: Org → Settings → Copilot → Policies → Coding Agent)
+3. **Settings → Code security → Code scanning** → Set CodeQL to **default setup**
+4. **Create a PAT_TOKEN secret** (required for Copilot assignment):
+   - <https://github.com/settings/tokens>s> → Fine-grained → select repo → Permissions: Issues Read & Write → Generate
+   - Repo → Settings → Secrets → Actions → New secret → Name: `PAT_TOKEN` → paste token
+5. Verify Copilot Coding Agent is available: go to any issue → Assignees dropdown → "Copilot" should appear
 
 ### Step 2: Test Module 2 — Merge the checkpoint
 
@@ -81,4 +83,8 @@ Or simpler — **just delete the fork and re-fork** from the upstream repo (whic
 | Copilot creates PRs              | PRs within 5-8 min of issue | Check the issue page for agent status updates                          |
 | Copilot Code Review              | Review comments on PR       | Add `copilot` as reviewer manually via Reviewers dropdown              |
 
-The single most important thing to validate: **assigning an issue to `copilot` triggers the Coding Agent**. If that doesn't work, check your org's Copilot policy settings.
+The single most important thing to validate: **assigning an issue to `copilot` triggers the Coding Agent**. If that doesn't work:
+
+- Verify your Copilot plan is Pro, Pro+, Business, or Enterprise
+- Verify the `PAT_TOKEN` secret is set (the workflow uses it to assign Copilot via the REST API)
+- Try assigning Copilot manually from the issue UI — if it doesn't appear there, Copilot Coding Agent isn't enabled for your account
