@@ -18,11 +18,12 @@ FROM alpine:3.22 AS runner
 
 ARG APP_VERSION=0.1.0
 
+# Create a non-root user and group for running the application
+RUN addgroup -S appgroup && adduser -S appuser -G appgroup
+
 # Copy the build output from the builder container
 COPY --from=builder --chown=appuser:appgroup /app/main .
 
-# Create a non-root user and group for running the application
-RUN addgroup -S appgroup && adduser -S appuser -G appgroup
 USER appuser
 
 # Expose port 3001 for the container

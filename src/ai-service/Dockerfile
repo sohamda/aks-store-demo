@@ -13,11 +13,12 @@ COPY requirements.txt .
 # Install the dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy the rest of the application code into the container
-COPY . .
-
 # Create a non-root user and group for running the application
 RUN addgroup -S appgroup && adduser -S appuser -G appgroup
+
+# Copy the rest of the application code into the container
+COPY --chown=appuser:appgroup . .
+
 USER appuser
 
 # Expose port 5001 for the FastAPI application

@@ -292,6 +292,8 @@ spec:
           ports:
             - containerPort: 8080
               name: store-front
+          # runAsNonRoot is not set because nginx:stable-alpine-slim requires root for its
+          # master process. Migrate to nginxinc/nginx-unprivileged to enable runAsNonRoot: true.
           securityContext:
             allowPrivilegeEscalation: false
             capabilities:
