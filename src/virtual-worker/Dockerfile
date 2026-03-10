@@ -33,8 +33,14 @@ ARG APP_VERSION=0.1.0
 # Install OpenSSL
 RUN apt-get update && apt-get install -y libssl-dev && rm -rf /var/lib/apt/lists/*
 
+# Create a non-root user for running the application
+RUN useradd --system --no-create-home --shell /bin/false appuser
+
 # Copy the binary from the builder stage
-COPY --from=builder /virtual-worker/target/release/virtual-worker /app
+COPY --from=builder --chown=appuser:appuser /virtual-worker/target/release/virtual-worker /app
+
+# Switch to non-root user
+USER appuser
 
 # Set the environment variable for the app version number
 ENV APP_VERSION=$APP_VERSION

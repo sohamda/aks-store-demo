@@ -22,6 +22,12 @@ spec:
           env:
             - name: AI_SERVICE_URL
               value: "http://ai-service:5001/"
+          securityContext:
+            allowPrivilegeEscalation: false
+            runAsNonRoot: true
+            capabilities:
+              drop:
+                - ALL
           resources:
             requests:
               cpu: 1m

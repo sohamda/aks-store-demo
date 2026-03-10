@@ -20,6 +20,11 @@ spec:
           ports:
             - containerPort: 8081
               name: store-admin
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
           resources:
             requests:
               cpu: 1m

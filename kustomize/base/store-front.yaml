@@ -20,6 +20,11 @@ spec:
           ports:
             - containerPort: 8080
               name: store-front
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
           resources:
             requests:
               cpu: 1m

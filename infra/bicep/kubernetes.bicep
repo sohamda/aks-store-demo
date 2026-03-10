@@ -100,13 +100,13 @@ module registry 'br/public:avm/res/container-registry/registry:0.9.1' = if (depl
     acrSku: 'Premium'
     exportPolicyStatus: 'enabled'
     publicNetworkAccess: 'Enabled'
-    // networkRuleSetIpRules: [
-    //   {
-    //     value: currentIpAddress
-    //     action: 'Allow'
-    //   }
-    // ]
-    // networkRuleBypassOptions: 'AzureServices'
+    networkRuleSetIpRules: [
+      {
+        value: currentIpAddress
+        action: 'Allow'
+      }
+    ]
+    networkRuleBypassOptions: 'AzureServices'
     roleAssignments: [
       {
         principalId: managedCluster.outputs.?kubeletIdentityObjectId!

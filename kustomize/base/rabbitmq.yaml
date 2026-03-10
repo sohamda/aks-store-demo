@@ -6,6 +6,16 @@ kind: ConfigMap
 metadata:
   name: rabbitmq-enabled-plugins
 ---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: rabbitmq-secrets
+data:
+  # NOTE: Replace these base64-encoded default values with strong, randomly generated credentials before deploying to production.
+  # echo -n 'your-strong-password' | base64
+  RABBITMQ_DEFAULT_USER: dXNlcm5hbWU=
+  RABBITMQ_DEFAULT_PASS: cGFzc3dvcmQ=
+---
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
@@ -31,11 +41,15 @@ spec:
               name: rabbitmq-amqp
             - containerPort: 15672
               name: rabbitmq-http
-          env:
-            - name: RABBITMQ_DEFAULT_USER
-              value: "username"
-            - name: RABBITMQ_DEFAULT_PASS
-              value: "password"
+          envFrom:
+            - secretRef:
+                name: rabbitmq-secrets
+          securityContext:
+            allowPrivilegeEscalation: false
+            runAsNonRoot: true
+            capabilities:
+              drop:
+                - ALL
           resources:
             requests:
               cpu: 10m

@@ -88,11 +88,8 @@ module databaseAccount 'br/public:avm/res/document-db/database-account:0.11.3' =
     //   ]
     // }
     roleAssignments: [
-      {
-        principalId: servicePrincipalId
-        roleDefinitionIdOrName: 'DocumentDB Account Contributor'
-        principalType: 'ServicePrincipal'
-      }
+      // The 'DocumentDB Account Contributor' control-plane role has been removed from this workload identity.
+      // Access is granted via the least-privilege custom data-plane role in sqlRoleDefinitions/sqlRoleAssignmentsPrincipalIds above.
     ]
     tags: tags
   }

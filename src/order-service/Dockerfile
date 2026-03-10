@@ -13,8 +13,14 @@ COPY package*.json ./
 # Install app dependencies
 RUN npm install --production
 
+# Create a non-root user for running the application
+RUN addgroup -S appgroup && adduser -S appuser -G appgroup
+
 # Copy the rest of the app source code to the container
-COPY . .
+COPY --chown=appuser:appgroup . .
+
+# Switch to non-root user
+USER appuser
 
 # Expose the port the app listens on
 EXPOSE 3000

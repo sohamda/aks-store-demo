@@ -8,11 +8,10 @@ module "db" {
   location                      = azurerm_resource_group.example.location
   minimal_tls_version           = "Tls12"
   public_network_access_enabled = true
-  # network_acl_bypass_for_azure_services = true
-  # ip_range_filter = [
-  #   "0.0.0.0",
-  #   "${chomp(data.http.current_ip.response_body)}/32"
-  # ]
+  ip_range_filter = [
+    "0.0.0.0",
+    "${chomp(data.http.current_ip.response_body)}/32"
+  ]
 
   capabilities = local.cosmosdb_account_kind == "MongoDB" ? [
     {

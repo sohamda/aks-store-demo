@@ -1,3 +1,13 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: order-service-secrets
+data:
+  # NOTE: Replace these base64-encoded default values with strong, randomly generated credentials before deploying to production.
+  # echo -n 'your-strong-password' | base64
+  ORDER_QUEUE_USERNAME: dXNlcm5hbWU=
+  ORDER_QUEUE_PASSWORD: cGFzc3dvcmQ=
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -24,14 +34,19 @@ spec:
               value: "rabbitmq"
             - name: ORDER_QUEUE_PORT
               value: "5672"
-            - name: ORDER_QUEUE_USERNAME
-              value: "username"
-            - name: ORDER_QUEUE_PASSWORD
-              value: "password"
             - name: ORDER_QUEUE_NAME
               value: "orders"
             - name: FASTIFY_ADDRESS
               value: "0.0.0.0"
+          envFrom:
+            - secretRef:
+                name: order-service-secrets
+          securityContext:
+            allowPrivilegeEscalation: false
+            runAsNonRoot: true
+            capabilities:
+              drop:
+                - ALL
           resources:
             requests:
               cpu: 1m
