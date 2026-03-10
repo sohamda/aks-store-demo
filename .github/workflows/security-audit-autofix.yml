@@ -39,7 +39,8 @@ jobs:
             echo "$AUDIT_OUTPUT" | jq -r '
               [.vulnerabilities | to_entries[]
                | select(.value.severity == "high" or .value.severity == "critical")
-               | "- **\(.key)** (\(.value.severity)): \(.value.via[0].title // \"unknown\")"
+               | .key as $k | .value as $v
+               | "- **\($k)** (\($v.severity)): \($v.via[0].title)"
               ] | join("\n")' > findings.md
           else
             echo "No high/critical vulnerabilities found." > findings.md
@@ -147,7 +148,7 @@ jobs:
             echo "$AUDIT_OUTPUT" | jq -r '
               [.dependencies[]
                | select(.vulns | length > 0)
-               | "- **\(.name)** \(.version): \(.vulns[0].id) — \(.vulns[0].description // \"see advisory\")"
+               | "- **\(.name)** \(.version): \(.vulns[0].id)"
               ] | join("\n")' > findings.md
           else
             echo "No vulnerabilities found." > findings.md
