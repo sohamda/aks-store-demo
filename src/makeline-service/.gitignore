@@ -8,6 +8,9 @@
 *.so
 *.dylib
 
+# Service binary
+makeline-service
+
 # Test binary, built with `go test -c`
 *.test
 
