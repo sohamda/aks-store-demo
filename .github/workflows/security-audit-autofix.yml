@@ -92,12 +92,20 @@ jobs:
             });
 
             // Assign Copilot to the issue to trigger Coding Agent
-            await github.rest.issues.addAssignees({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: issue.data.number,
-              assignees: ['copilot']
-            });
+            try {
+              const assignResult = await github.rest.issues.addAssignees({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issue.data.number,
+                assignees: ['copilot']
+              });
+              console.log('Assign result status:', assignResult.status);
+              console.log('Assignees:', assignResult.data.assignees?.map(a => a.login));
+            } catch (err) {
+              console.error('Failed to assign copilot:', err.message);
+              console.error('Status:', err.status);
+              console.error('Response:', JSON.stringify(err.response?.data));
+            }
 
   audit-python:
     name: Audit Python Dependencies
@@ -174,12 +182,20 @@ jobs:
             });
 
             // Assign Copilot to the issue to trigger Coding Agent
-            await github.rest.issues.addAssignees({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: issue.data.number,
-              assignees: ['copilot']
-            });
+            try {
+              const assignResult = await github.rest.issues.addAssignees({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issue.data.number,
+                assignees: ['copilot']
+              });
+              console.log('Assign result status:', assignResult.status);
+              console.log('Assignees:', assignResult.data.assignees?.map(a => a.login));
+            } catch (err) {
+              console.error('Failed to assign copilot:', err.message);
+              console.error('Status:', err.status);
+              console.error('Response:', JSON.stringify(err.response?.data));
+            }
 
   test-coverage-check:
     name: Check Test Coverage Gaps
@@ -255,9 +271,17 @@ jobs:
             });
 
             // Assign Copilot to the issue to trigger Coding Agent
-            await github.rest.issues.addAssignees({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: issue.data.number,
-              assignees: ['copilot']
-            });
+            try {
+              const assignResult = await github.rest.issues.addAssignees({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issue.data.number,
+                assignees: ['copilot']
+              });
+              console.log('Assign result status:', assignResult.status);
+              console.log('Assignees:', assignResult.data.assignees?.map(a => a.login));
+            } catch (err) {
+              console.error('Failed to assign copilot:', err.message);
+              console.error('Status:', err.status);
+              console.error('Response:', JSON.stringify(err.response?.data));
+            }
