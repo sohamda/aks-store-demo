@@ -39,21 +39,21 @@ jobs:
             echo "$AUDIT_OUTPUT" | jq -r '
               [.vulnerabilities | to_entries[]
                | select(.value.severity == "high" or .value.severity == "critical")
-               | "- **\(.key)** (\(.value.severity)): \(.value.via[0].title // "unknown")"
+               | "- **\(.key)** (\(.value.severity)): \(.value.via[0].title // \"unknown\")"
               ] | join("\n")' > findings.md
           else
             echo "No high/critical vulnerabilities found." > findings.md
           fi
 
-      - name: Create issue and assign to Copilot
+      - name: Create issue
         if: steps.audit.outputs.total != '0'
+        id: create-issue
         uses: actions/github-script@v7
         with:
           script: |
             const fs = require('fs');
             const findings = fs.readFileSync('src/order-service/findings.md', 'utf8').trim();
 
-            // Deduplicate: skip if an open issue already exists
             const existing = await github.rest.issues.listForRepo({
               owner: context.repo.owner,
               repo: context.repo.repo,
@@ -62,6 +62,7 @@ jobs:
             });
             if (existing.data.length > 0) {
               console.log('Open issue already exists, skipping creation');
+              core.setOutput('issue_number', '');
               return;
             }
 
@@ -90,22 +91,36 @@ jobs:
               ].join('\n'),
               labels: ['security', 'automated', 'order-service'],
             });
+            core.setOutput('issue_number', issue.data.number);
 
-            // Assign Copilot to the issue to trigger Coding Agent
-            try {
-              const assignResult = await github.rest.issues.addAssignees({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                issue_number: issue.data.number,
-                assignees: ['copilot']
-              });
-              console.log('Assign result status:', assignResult.status);
-              console.log('Assignees:', assignResult.data.assignees?.map(a => a.login));
-            } catch (err) {
-              console.error('Failed to assign copilot:', err.message);
-              console.error('Status:', err.status);
-              console.error('Response:', JSON.stringify(err.response?.data));
-            }
+      - name: Assign Copilot to issue
+        if: steps.create-issue.outputs.issue_number != ''
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          ISSUE_NUMBER="${{ steps.create-issue.outputs.issue_number }}"
+          REPO="${{ github.repository }}"
+          ASSIGNED=false
+
+          for ASSIGNEE in "copilot-swe-agent[bot]" "copilot-swe-agent" "Copilot" "copilot"; do
+            echo "Trying assignee: $ASSIGNEE"
+            gh api "repos/$REPO/issues/$ISSUE_NUMBER/assignees" \
+              --method POST \
+              --input - <<< "{\"assignees\":[\"$ASSIGNEE\"]}" 2>&1 || true
+
+            CURRENT=$(gh api "repos/$REPO/issues/$ISSUE_NUMBER" --jq '[.assignees[].login] | join(",")')
+            if echo "$CURRENT" | grep -qi "copilot"; then
+              echo "✅ Assigned $ASSIGNEE to issue #$ISSUE_NUMBER (current: $CURRENT)"
+              ASSIGNED=true
+              break
+            else
+              echo "  Not assigned (current: $CURRENT)"
+            fi
+          done
+
+          if [[ "$ASSIGNED" != "true" ]]; then
+            echo "::warning::Could not auto-assign Copilot to issue #$ISSUE_NUMBER — assign manually from the UI"
+          fi
 
   audit-python:
     name: Audit Python Dependencies
@@ -132,14 +147,15 @@ jobs:
             echo "$AUDIT_OUTPUT" | jq -r '
               [.dependencies[]
                | select(.vulns | length > 0)
-               | "- **\(.name)** \(.version): \(.vulns[0].id) — \(.vulns[0].description // "see advisory")"
+               | "- **\(.name)** \(.version): \(.vulns[0].id) — \(.vulns[0].description // \"see advisory\")"
               ] | join("\n")' > findings.md
           else
             echo "No vulnerabilities found." > findings.md
           fi
 
-      - name: Create issue and assign to Copilot
+      - name: Create issue
         if: steps.audit.outputs.count != '0'
+        id: create-issue
         uses: actions/github-script@v7
         with:
           script: |
@@ -154,6 +170,7 @@ jobs:
             });
             if (existing.data.length > 0) {
               console.log('Open issue already exists, skipping creation');
+              core.setOutput('issue_number', '');
               return;
             }
 
@@ -180,22 +197,36 @@ jobs:
               ].join('\n'),
               labels: ['security', 'automated', 'ai-service'],
             });
+            core.setOutput('issue_number', issue.data.number);
 
-            // Assign Copilot to the issue to trigger Coding Agent
-            try {
-              const assignResult = await github.rest.issues.addAssignees({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                issue_number: issue.data.number,
-                assignees: ['copilot']
-              });
-              console.log('Assign result status:', assignResult.status);
-              console.log('Assignees:', assignResult.data.assignees?.map(a => a.login));
-            } catch (err) {
-              console.error('Failed to assign copilot:', err.message);
-              console.error('Status:', err.status);
-              console.error('Response:', JSON.stringify(err.response?.data));
-            }
+      - name: Assign Copilot to issue
+        if: steps.create-issue.outputs.issue_number != ''
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          ISSUE_NUMBER="${{ steps.create-issue.outputs.issue_number }}"
+          REPO="${{ github.repository }}"
+          ASSIGNED=false
+
+          for ASSIGNEE in "copilot-swe-agent[bot]" "copilot-swe-agent" "Copilot" "copilot"; do
+            echo "Trying assignee: $ASSIGNEE"
+            gh api "repos/$REPO/issues/$ISSUE_NUMBER/assignees" \
+              --method POST \
+              --input - <<< "{\"assignees\":[\"$ASSIGNEE\"]}" 2>&1 || true
+
+            CURRENT=$(gh api "repos/$REPO/issues/$ISSUE_NUMBER" --jq '[.assignees[].login] | join(",")')
+            if echo "$CURRENT" | grep -qi "copilot"; then
+              echo "✅ Assigned $ASSIGNEE to issue #$ISSUE_NUMBER (current: $CURRENT)"
+              ASSIGNED=true
+              break
+            else
+              echo "  Not assigned (current: $CURRENT)"
+            fi
+          done
+
+          if [[ "$ASSIGNED" != "true" ]]; then
+            echo "::warning::Could not auto-assign Copilot to issue #$ISSUE_NUMBER — assign manually from the UI"
+          fi
 
   test-coverage-check:
     name: Check Test Coverage Gaps
@@ -230,8 +261,9 @@ jobs:
             echo "has_gaps=false" >> "$GITHUB_OUTPUT"
           fi
 
-      - name: Create issue for test gaps
+      - name: Create issue
         if: steps.coverage.outputs.has_gaps == 'true'
+        id: create-issue
         uses: actions/github-script@v7
         with:
           script: |
@@ -246,6 +278,7 @@ jobs:
             });
             if (existing.data.length > 0) {
               console.log('Open issue already exists, skipping creation');
+              core.setOutput('issue_number', '');
               return;
             }
 
@@ -269,19 +302,33 @@ jobs:
               ].join('\n'),
               labels: ['testing', 'automated'],
             });
+            core.setOutput('issue_number', issue.data.number);
 
-            // Assign Copilot to the issue to trigger Coding Agent
-            try {
-              const assignResult = await github.rest.issues.addAssignees({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                issue_number: issue.data.number,
-                assignees: ['copilot']
-              });
-              console.log('Assign result status:', assignResult.status);
-              console.log('Assignees:', assignResult.data.assignees?.map(a => a.login));
-            } catch (err) {
-              console.error('Failed to assign copilot:', err.message);
-              console.error('Status:', err.status);
-              console.error('Response:', JSON.stringify(err.response?.data));
-            }
+      - name: Assign Copilot to issue
+        if: steps.create-issue.outputs.issue_number != ''
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          ISSUE_NUMBER="${{ steps.create-issue.outputs.issue_number }}"
+          REPO="${{ github.repository }}"
+          ASSIGNED=false
+
+          for ASSIGNEE in "copilot-swe-agent[bot]" "copilot-swe-agent" "Copilot" "copilot"; do
+            echo "Trying assignee: $ASSIGNEE"
+            gh api "repos/$REPO/issues/$ISSUE_NUMBER/assignees" \
+              --method POST \
+              --input - <<< "{\"assignees\":[\"$ASSIGNEE\"]}" 2>&1 || true
+
+            CURRENT=$(gh api "repos/$REPO/issues/$ISSUE_NUMBER" --jq '[.assignees[].login] | join(",")')
+            if echo "$CURRENT" | grep -qi "copilot"; then
+              echo "✅ Assigned $ASSIGNEE to issue #$ISSUE_NUMBER (current: $CURRENT)"
+              ASSIGNED=true
+              break
+            else
+              echo "  Not assigned (current: $CURRENT)"
+            fi
+          done
+
+          if [[ "$ASSIGNED" != "true" ]]; then
+            echo "::warning::Could not auto-assign Copilot to issue #$ISSUE_NUMBER — assign manually from the UI"
+          fi
