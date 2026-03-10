@@ -13,6 +13,7 @@ Go to `https://github.com/sohamda/aks-store-demo/settings`:
 ### Step 2: Test Module 2 — Merge the checkpoint
 
 On github.com:
+
 1. Go to your repo → **Pull requests** → **New pull request**
 2. Base: `main` ← Compare: `checkpoint/module-2`
 3. Create PR → Merge it
@@ -22,6 +23,7 @@ On github.com:
 ### Step 3: Test Module 3 — Check DevSecOps results
 
 After 15-30 min:
+
 1. **Security tab → Dependabot alerts** — should show vulnerability findings
 2. **Security tab → Code scanning** — CodeQL results should appear
 3. **Pull requests tab** — Dependabot may have created dependency bump PRs
@@ -61,7 +63,7 @@ After testing, reset `main` to the clean state so attendees start fresh:
 # Reset main to the original clean state (before checkpoint merges)
 git fetch origin
 git checkout main
-git reset --hard de2ebc2   # your last clean commit (with handouts, no checkpoint content)
+git reset --hard d18e1f2   # your last clean commit (with handouts, no checkpoint content)
 git push origin main --force-with-lease
 ```
 
@@ -69,14 +71,14 @@ Or simpler — **just delete the fork and re-fork** from the upstream repo (whic
 
 ### What to watch for
 
-| What | Expected | If it fails |
-|------|----------|-------------|
-| Dependabot alerts appear | Within 15-30 min | Check Settings → Code security → Dependabot is enabled |
-| CodeQL runs | Triggered by merge to main | Check Actions tab for the CodeQL workflow run |
-| Security audit workflow triggers | Manual trigger works | Check Actions → workflow → "Run workflow" button visible |
-| Issues auto-created | 2-3 issues in Issues tab | Check workflow logs for errors (permissions, jq parsing) |
-| `copilot` assignee works | "Copilot is working" badge | Coding Agent must be enabled at **org level** — this is the #1 blocker |
-| Copilot creates PRs | PRs within 5-8 min of issue | Check the issue page for agent status updates |
-| Copilot Code Review | Review comments on PR | Add `copilot` as reviewer manually via Reviewers dropdown |
+| What                             | Expected                    | If it fails                                                            |
+| -------------------------------- | --------------------------- | ---------------------------------------------------------------------- |
+| Dependabot alerts appear         | Within 15-30 min            | Check Settings → Code security → Dependabot is enabled                 |
+| CodeQL runs                      | Triggered by merge to main  | Check Actions tab for the CodeQL workflow run                          |
+| Security audit workflow triggers | Manual trigger works        | Check Actions → workflow → "Run workflow" button visible               |
+| Issues auto-created              | 2-3 issues in Issues tab    | Check workflow logs for errors (permissions, jq parsing)               |
+| `copilot` assignee works         | "Copilot is working" badge  | Coding Agent must be enabled at **org level** — this is the #1 blocker |
+| Copilot creates PRs              | PRs within 5-8 min of issue | Check the issue page for agent status updates                          |
+| Copilot Code Review              | Review comments on PR       | Add `copilot` as reviewer manually via Reviewers dropdown              |
 
 The single most important thing to validate: **assigning an issue to `copilot` triggers the Coding Agent**. If that doesn't work, check your org's Copilot policy settings.

@@ -1,6 +1,6 @@
 # Handout: Module 2 — Foundation Setup
 
-> **What you'll do**: Create 3 files on your fork via github.com UI to set up Copilot custom instructions, Dependabot with auto-assign to Copilot, and CodeQL code scanning.
+> **What you'll do**: Create 3 files on your fork via github.com UI to set up Copilot custom instructions, Dependabot for automated dependency scanning, and CodeQL code scanning.
 >
 > **How**: On your fork → click "Add file" → "Create new file" → paste content → commit to `main`.
 >
@@ -59,7 +59,7 @@ Data flow: customer → store-front → order-service → RabbitMQ → makeline-
 
 **Path**: `.github/dependabot.yml`
 
-> Key detail: every entry has `assignees: ["copilot"]` — this means Dependabot PRs are automatically assigned to the Copilot Coding Agent.
+> Dependabot will automatically create PRs to update vulnerable dependencies across all 6 ecosystems in the repo.
 
 ```yaml
 version: 2
@@ -68,8 +68,6 @@ updates:
     directory: "/src/order-service"
     schedule:
       interval: "daily"
-    assignees:
-      - "copilot"
     labels:
       - "dependencies"
       - "security"
@@ -79,8 +77,6 @@ updates:
     directory: "/src/store-front"
     schedule:
       interval: "daily"
-    assignees:
-      - "copilot"
     labels:
       - "dependencies"
       - "automated"
@@ -89,8 +85,6 @@ updates:
     directory: "/src/store-admin"
     schedule:
       interval: "daily"
-    assignees:
-      - "copilot"
     labels:
       - "dependencies"
       - "automated"
@@ -99,8 +93,6 @@ updates:
     directory: "/src/ai-service"
     schedule:
       interval: "daily"
-    assignees:
-      - "copilot"
     labels:
       - "dependencies"
       - "automated"
@@ -109,8 +101,6 @@ updates:
     directory: "/src/makeline-service"
     schedule:
       interval: "daily"
-    assignees:
-      - "copilot"
     labels:
       - "dependencies"
       - "automated"
@@ -119,8 +109,6 @@ updates:
     directory: "/src/product-service"
     schedule:
       interval: "daily"
-    assignees:
-      - "copilot"
     labels:
       - "dependencies"
       - "automated"
@@ -129,8 +117,6 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
-    assignees:
-      - "copilot"
     labels:
       - "dependencies"
       - "ci"
