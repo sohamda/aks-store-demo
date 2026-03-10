@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"log"
 	"strings"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/data/azcosmos"
@@ -221,4 +222,12 @@ func (r *CosmosDBOrderRepo) UpdateOrder(order Order) error {
 	}
 
 	return nil
+}
+
+// Ping checks the database connection is alive by reading the container properties
+func (r *CosmosDBOrderRepo) Ping() error {
+	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
+	defer cancel()
+	_, err := r.db.Read(ctx, nil)
+	return err
 }

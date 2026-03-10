@@ -8,6 +8,7 @@ import (
 	"io"
 	"log"
 	"net/http"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
@@ -253,4 +254,11 @@ func (r *MongoDBOrderRepo) UpdateOrder(order Order) error {
 
 	log.Printf("Matched %v documents and updated %v documents.\n", updateResult.MatchedCount, updateResult.ModifiedCount)
 	return nil
+}
+
+// Ping checks the database connection is alive
+func (r *MongoDBOrderRepo) Ping() error {
+	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
+	defer cancel()
+	return r.db.Database().Client().Ping(ctx, nil)
 }

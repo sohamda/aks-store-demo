@@ -263,10 +263,18 @@ When the app is running, you should see output similar to the following:
 [GIN-debug] GET    /order/:id                --> main.getOrder (4 handlers)
 [GIN-debug] PUT    /order                    --> main.updateOrder (4 handlers)
 [GIN-debug] GET    /health                   --> main.main.func1 (4 handlers)
+[GIN-debug] GET    /ready                    --> main.readyHandler (4 handlers)
 [GIN-debug] [WARNING] You trusted all proxies, this is NOT safe. We recommend you to set a value.
 Please check https://pkg.go.dev/github.com/gin-gonic/gin#readme-don-t-trust-all-proxies for details.
 [GIN-debug] Listening and serving HTTP on :3001
 ```
+
+## Health check endpoints
+
+| Endpoint  | Method | Description                                                                         | Response codes      |
+|-----------|--------|-------------------------------------------------------------------------------------|---------------------|
+| `/health` | GET    | Liveness probe — returns `{"status":"ok"}` if the process is running               | 200                 |
+| `/ready`  | GET    | Readiness probe — returns `{"status":"ok"}` only if the database connection is live | 200, 503            |
 
 Using the [`test-makeline-service.http`](./test-makeline-service.http) file in the root of the repo, you can test the API. However, you will need to use VS Code and have the [REST Client](https://marketplace.visualstudio.com/items?itemName=humao.rest-client) extension installed.
 

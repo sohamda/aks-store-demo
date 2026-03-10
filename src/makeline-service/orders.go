@@ -26,6 +26,7 @@ type OrderRepo interface {
 	GetOrder(id string) (Order, error)
 	InsertOrders(orders []Order) error
 	UpdateOrder(order Order) error
+	Ping() error
 }
 
 type OrderService struct {

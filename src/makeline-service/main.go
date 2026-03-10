@@ -46,6 +46,7 @@ func main() {
 			"version": os.Getenv("APP_VERSION"),
 		})
 	})
+	router.GET("/ready", readyHandler)
 	router.Run(":3001")
 }
 
@@ -55,6 +56,21 @@ func OrderMiddleware(orderService *OrderService) gin.HandlerFunc {
 		c.Set("orderService", orderService)
 		c.Next()
 	}
+}
+
+// readyHandler is a readiness probe that returns 200 if the database connection is established
+func readyHandler(c *gin.Context) {
+	svc, ok := c.MustGet("orderService").(*OrderService)
+	if !ok {
+		c.JSON(http.StatusServiceUnavailable, gin.H{"status": "not ready"})
+		return
+	}
+	if err := svc.repo.Ping(); err != nil {
+		log.Printf("Readiness check failed: %s", err)
+		c.JSON(http.StatusServiceUnavailable, gin.H{"status": "not ready"})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"status": "ok"})
 }
 
 // Fetches orders from the order queue and stores them in database
