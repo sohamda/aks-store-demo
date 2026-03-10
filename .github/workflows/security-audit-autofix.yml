@@ -97,7 +97,7 @@ jobs:
       - name: Assign Copilot to issue
         if: steps.create-issue.outputs.issue_number != ''
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.PAT_TOKEN }}
         run: |
           ISSUE_NUMBER="${{ steps.create-issue.outputs.issue_number }}"
           REPO="${{ github.repository }}"
@@ -203,7 +203,7 @@ jobs:
       - name: Assign Copilot to issue
         if: steps.create-issue.outputs.issue_number != ''
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.PAT_TOKEN }}
         run: |
           ISSUE_NUMBER="${{ steps.create-issue.outputs.issue_number }}"
           REPO="${{ github.repository }}"
@@ -308,7 +308,7 @@ jobs:
       - name: Assign Copilot to issue
         if: steps.create-issue.outputs.issue_number != ''
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.PAT_TOKEN }}
         run: |
           ISSUE_NUMBER="${{ steps.create-issue.outputs.issue_number }}"
           REPO="${{ github.repository }}"
