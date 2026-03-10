@@ -487,7 +487,7 @@ By now, Copilot should have PRs from auto-created issues.
 - [ ] Fork the repo to your own GitHub account
 - [ ] Enable GitHub Actions on the fork (Settings → Actions → General → Allow all actions)
 - [ ] Verify Copilot is available on github.com (open Copilot Chat on the repo page)
-- [ ] Create a `PAT_TOKEN` repo secret (Fine-grained PAT with Issues Read & Write permission) — required for auto-assigning Copilot to issues in Module 4
+- [ ] Create a `PAT_TOKEN` repo secret (Fine-grained PAT with Read & Write for: Actions, Contents, Issues, Pull requests) — required for auto-assigning Copilot to issues in Module 4
 
 ## Risks & Mitigations
 

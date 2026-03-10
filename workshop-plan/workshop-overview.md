@@ -2,11 +2,11 @@
 
 ## Workshop at a Glance
 
-|                  |                                                                          |
-| ---------------- | ------------------------------------------------------------------------ |
-| **Duration**     | ~75 min core + take-home exercises                                       |
-| **Platform**     | github.com only (no IDE)                                                 |
-| **Repo**         | aks-store-demo (8 polyglot microservices, zero Copilot/DevSecOps config) |
+|                  |                                                                                 |
+| ---------------- | ------------------------------------------------------------------------------- |
+| **Duration**     | ~75 min core + take-home exercises                                              |
+| **Platform**     | github.com only (no IDE)                                                        |
+| **Repo**         | aks-store-demo (8 polyglot microservices, zero Copilot/DevSecOps config)        |
 | **Prerequisite** | GitHub account with Copilot Pro/Pro+/Business/Enterprise + Coding Agent enabled |
 | **Setup**        | Fork the repo, enable GitHub Actions, create `PAT_TOKEN` repo secret            |
 
@@ -63,4 +63,4 @@
 | **Attendee**    | Fork the repo                                                            |
 | **Attendee**    | Enable GitHub Actions (Settings → Actions → Allow all)                   |
 | **Attendee**    | Verify Copilot Chat works on github.com                                  |
-| **Attendee**    | Create `PAT_TOKEN` repo secret (Fine-grained PAT, Issues Read & Write)   |
+| **Attendee**    | Create `PAT_TOKEN` repo secret (Fine-grained PAT: Actions, Contents, Issues, Pull requests — all R&W) |

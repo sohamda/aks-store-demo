@@ -8,7 +8,9 @@ Go to `https://github.com/sohamda/aks-store-demo/settings`:
    - Secret scanning ✅
 3. **Settings → Code security → Code scanning** → Set CodeQL to **default setup**
 4. **Create a PAT_TOKEN secret** (required for Copilot assignment):
-   - <https://github.com/settings/tokens>s> → Fine-grained → select repo → Permissions: Issues Read & Write → Generate
+   - https://github.com/settings/tokens → Fine-grained → select repo
+   - Permissions (all Read & Write): **Actions**, **Contents**, **Issues**, **Pull requests**
+   - Generate → copy token
    - Repo → Settings → Secrets → Actions → New secret → Name: `PAT_TOKEN` → paste token
 5. Verify Copilot Coding Agent is available: go to any issue → Assignees dropdown → "Copilot" should appear
 

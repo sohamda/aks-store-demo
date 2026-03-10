@@ -16,10 +16,14 @@
 
 The workflow needs a Personal Access Token (PAT) to assign Copilot to issues. The default `GITHUB_TOKEN` doesn't carry your Copilot entitlement.
 
-1. Go to **https://github.com/settings/tokens** → **Fine-grained tokens** → **Generate new token**
+1. Go to **<https://github.com/settings/tokens>s>** → **Fine-grained tokens** → **Generate new token**
 2. **Token name**: `workshop-copilot-assign`
 3. **Repository access**: select your fork of `aks-store-demo`
-4. **Permissions**: Issues → **Read and Write**
+4. **Permissions** (all Read & Write):
+   - **Actions** → Read and Write
+   - **Contents** → Read and Write
+   - **Issues** → Read and Write
+   - **Pull requests** → Read and Write
 5. Click **Generate token** → copy the token
 6. Go to your fork → **Settings** → **Secrets and variables** → **Actions** → **New repository secret**
 7. **Name**: `PAT_TOKEN`
