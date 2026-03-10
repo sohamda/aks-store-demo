@@ -91,12 +91,12 @@ jobs:
               labels: ['security', 'automated', 'order-service'],
             });
 
-            // Trigger Copilot Coding Agent by mentioning @copilot
-            await github.rest.issues.createComment({
+            // Assign Copilot to the issue to trigger Coding Agent
+            await github.rest.issues.addAssignees({
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: issue.data.number,
-              body: '@copilot please fix these npm vulnerabilities by updating the affected dependencies in `src/order-service/package.json`. Ensure all existing tests pass.'
+              assignees: ['copilot']
             });
 
   audit-python:
@@ -173,12 +173,12 @@ jobs:
               labels: ['security', 'automated', 'ai-service'],
             });
 
-            // Trigger Copilot Coding Agent by mentioning @copilot
-            await github.rest.issues.createComment({
+            // Assign Copilot to the issue to trigger Coding Agent
+            await github.rest.issues.addAssignees({
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: issue.data.number,
-              body: '@copilot please fix these Python dependency vulnerabilities by updating the affected packages in `src/ai-service/requirements.txt`. Verify the FastAPI app starts correctly.'
+              assignees: ['copilot']
             });
 
   test-coverage-check:
@@ -254,10 +254,10 @@ jobs:
               labels: ['testing', 'automated'],
             });
 
-            // Trigger Copilot Coding Agent by mentioning @copilot
-            await github.rest.issues.createComment({
+            // Assign Copilot to the issue to trigger Coding Agent
+            await github.rest.issues.addAssignees({
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: issue.data.number,
-              body: '@copilot please add unit tests for the services listed above. Follow the coding standards in `.github/copilot-instructions.md`.'
+              assignees: ['copilot']
             });
