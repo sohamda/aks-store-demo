@@ -86,6 +86,7 @@ This is required for assigning Copilot to issues via workflows.
 
 Go to any issue on your fork → click the **Assignees** dropdown → **"Copilot"** should appear as an option.
 
+
 > **If Copilot doesn't appear**: Verify your plan is Copilot Pro, Pro+, Business, or Enterprise and that Coding Agent is enabled in your account/org settings.
 
 ---
@@ -419,7 +420,6 @@ The order-service (`src/order-service/`) accepts orders via POST /order without 
 4. **Labels**: `enhancement`
 5. **Assignees**: `copilot`
 6. Submit → verify **"Copilot is working"** appears
-
 #### Option: Add Health Endpoints (Go — Medium)
 
 1. Go to **Issues** → **New issue**
