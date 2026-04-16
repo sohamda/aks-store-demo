@@ -8,7 +8,9 @@
 >
 > **After committing**: Go to **Actions** tab → select the workflow → click **"Run workflow"** → watch it create issues and assign to Copilot.
 >
-> **If you fall behind**: Go to your fork → create a PR from `checkpoint/module-4` → `main` → merge it.
+> **If you fall behind**: Go to your fork → create a PR from `checkpoint/module-4` → `main` → merge it. The PR will show **only 1 file**: `security-audit-autofix.yml`.
+>
+> **Note**: `checkpoint/module-4` contains only the Module 4 file. If you also skipped Module 2, merge `checkpoint/module-2` first, then merge `checkpoint/module-4`.
 
 ---
 
@@ -52,7 +54,9 @@ The YAML content is in the checkpoint branch. To use it:
 
 1. Go to your fork → Pull requests → New pull request
 2. Base: `main` ← Compare: `checkpoint/module-4`
-3. Create PR → Merge it
+3. **Verify**: the PR should show only **1 file changed** (`security-audit-autofix.yml`)
+   - If it shows Module 2 files too, you need to merge `checkpoint/module-2` into `main` first
+4. Create PR → Merge it
 
 **Option B — Create manually**: Go to the checkpoint branch on GitHub to view the file content: `https://github.com/<you>/aks-store-demo/blob/checkpoint/module-4/.github/workflows/security-audit-autofix.yml`
 

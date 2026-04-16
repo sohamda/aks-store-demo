@@ -23,9 +23,11 @@ On github.com:
 
 1. Go to your repo → **Pull requests** → **New pull request**
 2. Base: `main` ← Compare: `checkpoint/module-2`
-3. Create PR → Merge it
-4. Verify the 3 files appear on `main`: `copilot-instructions.md`, `dependabot.yml`, `codeql.yml`
-5. **Wait ~15-30 min** — Dependabot will start creating alerts and PRs, CodeQL will run on the merge commit
+3. **Verify the PR shows exactly 3 files changed**: `copilot-instructions.md`, `dependabot.yml`, `codeql.yml`
+   - If it shows other files, the checkpoint branch was created incorrectly — recreate it from `main` with only Module 2 files
+4. Create PR → Merge it
+5. Verify the 3 files appear on `main`: `copilot-instructions.md`, `dependabot.yml`, `codeql.yml`
+6. **Wait ~15-30 min** — Dependabot will start creating alerts and PRs, CodeQL will run on the merge commit
 
 ### Step 3: Test Module 3 — Check DevSecOps results
 
@@ -40,11 +42,14 @@ After 15-30 min:
 
 1. Go to your repo → **Pull requests** → **New pull request**
 2. Base: `main` ← Compare: `checkpoint/module-4`
-3. Create PR → Merge it
-4. Go to **Actions** tab → **"Security Audit → Auto-Create Issues → Assign to Copilot"** → **"Run workflow"** (select `main`)
-5. Wait ~2 min for it to complete
-6. Go to **Issues** tab — check for auto-created issues
-7. Check that issues have `copilot` as assignee and show "Copilot is working"
+3. **Verify the PR shows exactly 1 file changed**: `security-audit-autofix.yml`
+   - Since Module 2 was already merged and `checkpoint/module-4` is non-cumulative (branched from `main`, not from `checkpoint/module-2`), only the Module 4 file should appear
+   - If Module 2 files also show up, the branch was created incorrectly — see the branch creation script in the plan document
+4. Create PR → Merge it
+5. Go to **Actions** tab → **"Security Audit → Auto-Create Issues → Assign to Copilot"** → **"Run workflow"** (select `main`)
+6. Wait ~2 min for it to complete
+7. Go to **Issues** tab — check for auto-created issues
+8. Check that issues have `copilot` as assignee and show "Copilot is working"
 
 ### Step 5: Test Module 5 — Verify Copilot creates PRs
 
@@ -138,6 +143,8 @@ git push origin main --force-with-lease
 
 | What                             | Expected                    | If it fails                                                                       |
 | -------------------------------- | --------------------------- | --------------------------------------------------------------------------------- |
+| Checkpoint/module-2 PR diff      | 3 files only (module 2)     | Branch was created from wrong base; recreate from `main` with only module 2 files |
+| Checkpoint/module-4 PR diff      | 1 file only (module 4)      | Branch was created from `checkpoint/module-2` instead of `main`; recreate         |
 | Dependabot alerts appear         | Within 15-30 min            | Check Settings → Advanced Security → Dependabot is enabled                        |
 | CodeQL runs                      | Triggered by merge to main  | Check Actions tab for the CodeQL workflow run                                     |
 | Security audit workflow triggers | Manual trigger works        | Check Actions → workflow → "Run workflow" button visible                          |

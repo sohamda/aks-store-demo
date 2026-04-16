@@ -37,7 +37,10 @@ main                          ← Clean repo, zero Copilot/DevSecOps config (sta
 - Architecture overview (8 polyglot microservices, event-driven)
 - Key point: repo has **zero DevSecOps** — no Dependabot, no CodeQL, no scanning, no Copilot config
 - Explain branch strategy: work on `main`, checkpoint branches are your safety net
+  - **Important**: checkpoint branches are non-cumulative — each adds only its module’s files
+  - If you need to catch up on multiple modules, merge checkpoints sequentially (module-2 first, then module-4)
 - Confirm forks ready, Actions enabled, Coding Agent enabled, `PAT_TOKEN` secret set
+- **For first-time GitHub users**: point them to the "GitHub Basics" section at the top of the workshop guide
 
 ### Module 1: Copilot Chat — Security Assessment (10 min) — `main`
 
@@ -170,7 +173,7 @@ jobs:
       - uses: github/codeql-action/analyze@v3
 ```
 
-Fall behind? → Merge `checkpoint/module-2` into `main`.
+Fall behind? → Merge `checkpoint/module-2` into `main` (PR will show only these 3 files).
 
 **Takeaway**: Dependabot scans 7 ecosystems daily. Combined with the security-audit workflow (Module 4), this creates a comprehensive automated dependency management pipeline.
 
@@ -229,7 +232,7 @@ The full workflow YAML is in **handout-module-4.md** and on the **`checkpoint/mo
 
 Discuss the agentic loop while waiting: scan → issue → agent plans → codes → CI runs → agent reads failure → fixes → repushes → PR ready.
 
-Fall behind? → Merge `checkpoint/module-4`.
+Fall behind? → Merge `checkpoint/module-4` (shows only the workflow file; does NOT include Module 2 files). If you also skipped Module 2, merge `checkpoint/module-2` first.
 
 **Takeaway**: This is the agentic workflow — an automated pipeline that finds problems and delegates fixes to an AI agent on a daily schedule.
 

@@ -4,7 +4,20 @@
 >
 > **How**: On your fork → click "Add file" → "Create new file" → paste content → commit to `main`.
 >
-> **If you fall behind**: Go to your fork → create a PR from `checkpoint/module-2` → `main` → merge it.
+> **If you’re new to GitHub**: See the "GitHub Basics" section in the workshop guide for step-by-step screenshots of how to create files and navigate settings.
+>
+> **If you fall behind**: Go to your fork → create a PR from `checkpoint/module-2` → `main` → merge it. The PR will show **only these 3 files**.
+
+---
+
+### How to create a file on GitHub
+
+1. Go to your fork’s main page (Code tab)
+2. Click **"Add file"** (top right) → **"Create new file"**
+3. In the filename box, type the full path (e.g., `.github/copilot-instructions.md`) — folders are created automatically when you type `/`
+4. Paste the content below into the editor
+5. Click **"Commit changes"** → keep "Commit directly to the `main` branch" → click **"Commit changes"**
+6. Repeat for each file
 
 ---
 

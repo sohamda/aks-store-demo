@@ -48,45 +48,108 @@ By the end, your fork will have a fully autonomous DevSecOps pipeline:
 
 ---
 
+## GitHub Basics (First-Time Users)
+
+> **Already comfortable with GitHub?** Skip to [Setup (Do This First)](#setup-do-this-first).
+
+If this is your first time using GitHub, here's a quick primer on the concepts you'll use in this workshop:
+
+### Key Concepts
+
+| Term                  | What it means                                                                                                               |
+| --------------------- | --------------------------------------------------------------------------------------------------------------------------- |
+| **Repository (repo)** | A project folder on GitHub that contains code, files, and version history                                                   |
+| **Fork**              | Your personal copy of someone else's repo. Changes to your fork don't affect the original                                   |
+| **Branch**            | A parallel version of the code. `main` is the default branch. You can create other branches to work on changes in isolation |
+| **Commit**            | A saved change. Each commit has a message describing what changed                                                           |
+| **Pull Request (PR)** | A proposal to merge changes from one branch into another. PRs let you review changes before merging                         |
+| **Merge**             | Combining changes from one branch into another                                                                              |
+| **GitHub Actions**    | Automated workflows that run when events happen (e.g., code is pushed, a schedule triggers)                                 |
+| **Issue**             | A task, bug report, or feature request tracked on the repo                                                                  |
+| **Secret**            | A sensitive value (like a token) stored securely in repo settings, accessible only by workflows                             |
+
+### How to Navigate GitHub
+
+- **Tabs at the top of your repo**: Code | Issues | Pull requests | Actions | Security | Settings
+- **Code tab**: Browse files, click "Add file" → "Create new file" to create files directly in the browser
+- **Settings**: Click the ⚙️ **Settings** tab (far right) to configure repo options
+
+### How to Create a File on GitHub (used in Modules 2, 4, 6)
+
+1. Go to your fork's **Code** tab
+2. Click the **"Add file"** button (top right, above the file list) → **"Create new file"**
+3. In the **"Name your file..."** box at the top, type the full path (e.g., `.github/copilot-instructions.md`)
+   - Typing a `/` automatically creates folders
+4. Paste the content into the editor
+5. Scroll down → click **"Commit changes"**
+6. In the dialog, leave "Commit directly to the `main` branch" selected → click **"Commit changes"**
+
+### How to Create a Pull Request and Merge (used for catch-up checkpoints)
+
+1. Go to your fork → click the **"Pull requests"** tab
+2. Click **"New pull request"** (green button)
+3. Set **base**: `main` ← **compare**: the checkpoint branch (e.g., `checkpoint/module-2`)
+4. Click **"Create pull request"**
+5. Click **"Merge pull request"** → **"Confirm merge"**
+6. Done — the files from the checkpoint are now on your `main` branch
+
+### How to Navigate to Settings
+
+1. Go to your fork on GitHub
+2. Click the **Settings** tab (last tab in the top navigation bar)
+3. Use the left sidebar to find specific settings sections (Actions, Secrets, Security, etc.)
+
+---
+
 ## Setup (Do This First)
 
 ### Fork the Repository
 
 1. Go to the source repo on GitHub
-2. Click **Fork** → ensure **"Copy only main branch"** is NOT checked → **Create fork**
+2. Click **Fork** (top-right button) → ensure **"Copy only main branch"** is **NOT** checked (you need all branches for catch-up checkpoints) → **Create fork**
    ![Copy all branches](./images/copy%20all%20branches.png)
+
+> **What this does**: Creates your own copy of the repo under your GitHub account. You'll make all changes on your fork.
 
 ### Enable GitHub Features
 
 Go to `https://github.com/<your-username>/aks-store-demo/settings`:
 
-1. **Settings → Actions → General** →
-   - Select "Allow all actions and reusable workflows" → Save
-2. **Settings → General → Features** →
+1. **Settings → Actions → General** (left sidebar → Actions → General):
+   - Select "Allow all actions and reusable workflows" → **Save**
+2. **Settings → General → Features** (left sidebar → General, scroll to Features section):
    - Enable **Issues** ✅
-3. **Settings → Advanced Security** → Enable:
-   - Dependabot alerts ✅
-   - Secret Protection ✅
-4. **Settings → Code security → Code scanning** → Set CodeQL to **default setup**
+3. **Settings → Advanced Security** (left sidebar):
+   - Enable Dependabot alerts ✅
+   - Enable Secret Protection ✅
+4. **Settings → Code security → Code scanning** (left sidebar → Code security and analysis):
+   - Set CodeQL to **default setup**
 
 ### Create a PAT_TOKEN Secret
 
 This is required for assigning Copilot to issues via workflows.
 
-1. Go to <https://github.com/settings/tokens> → **Fine-grained tokens** → **Generate new token**
-2. **Token name**: `workshop-copilot-assign`
-3. **Repository access**: select your fork
-4. **Permissions** (all Read & Write): **Actions**, **Contents**, **Issues**, **Pull requests**
-   ![PAT Permissions](./images/pat%20permissions.png)
-5. Click **Generate token** → copy the token
-6. Go to your fork → **Settings** → **Secrets and variables** → **Actions** → **New repository secret**
-7. Add two secrets with the same token value:
-   - Name: `PAT_TOKEN` → paste token
-   - Name: `COPILOT_GITHUB_TOKEN` → paste the same token (needed for Module 7)
+1. Open a **new browser tab** and go to <https://github.com/settings/tokens>
+   - ⚠️ This is your **account settings** (not repo settings) — note the URL has no repo name
+2. Click **Fine-grained tokens** → **Generate new token**
+3. **Token name**: `workshop-copilot-assign`
+4. **Expiration**: 7 days (enough for the workshop)
+5. **Repository access**: click "Only select repositories" → find and select your fork of `aks-store-demo`
+6. **Permissions** — expand "Repository permissions" and set all four to **Read and Write**:
+   - **Actions** → Read and Write
+   - **Contents** → Read and Write
+   - **Issues** → Read and Write
+   - **Pull requests** → Read and Write
+     ![PAT Permissions](./images/pat%20permissions.png)
+7. Click **Generate token** → **copy the token immediately** (you won't see it again)
+8. Go back to your fork → **Settings** tab → **Secrets and variables** (left sidebar) → **Actions** → **New repository secret**
+9. Add two secrets with the **same token value**:
+   - Name: `PAT_TOKEN` → paste token → Add secret
+   - Name: `COPILOT_GITHUB_TOKEN` → paste the same token → Add secret (needed for Module 7)
 
 ### Verify Copilot Coding Agent
 
-Go to the Issues tab on your fork → click the **Assignees** dropdown → **"Copilot"** should appear as an option.
+Go to the **Issues** tab on your fork → click **New issue** → click the **Assignees** gear icon on the right → type **"Copilot"** — it should appear as an option.
 
 > **If Copilot doesn't appear**: Verify your plan is Copilot Pro, Pro+, Business, or Enterprise and that Coding Agent is enabled in your account/org settings.
 
@@ -335,6 +398,8 @@ With 3 files, you now have a continuous security pipeline: Dependabot scans depe
 
 **Catch-up**: If you fall behind, create a PR from `checkpoint/module-4` → `main` and merge it.
 
+> **Important**: Each checkpoint branch contains **only its own module's files**. If you skipped Module 2 and need to catch up on both, merge `checkpoint/module-2` first, then merge `checkpoint/module-4`. See the [Checkpoint Branch Strategy](#checkpoint-branch-strategy) section below.
+
 ### How it works
 
 The workflow has 3 parallel jobs:
@@ -358,7 +423,9 @@ The workflow uses a two-step pattern for Copilot assignment:
 
 1. Go to your fork → **Pull requests** → **New pull request**
 2. Base: `main` ← Compare: `checkpoint/module-4`
-3. Create PR → Merge it
+3. **Verify the PR only shows 1 file changed**: `.github/workflows/security-audit-autofix.yml`
+   - If it shows Module 2 files too, you need to merge `checkpoint/module-2` first
+4. Create PR → Merge it
 
 **Option B — Create manually**: View the file at `https://github.com/<your-username>/aks-store-demo/blob/checkpoint/module-4/.github/workflows/security-audit-autofix.yml` and create it via the github.com UI.
 
@@ -832,3 +899,48 @@ Add more scanners to `security-audit-autofix.yml`: `govulncheck` for Go, `cargo-
 - [GitHub Agentic Workflows Docs](https://github.github.com/gh-aw/)
 - [gh-aw Quick Start](https://github.github.com/gh-aw/setup/quick-start/)
 - [gh-aw Example Gallery](https://github.github.com/gh-aw/#gallery)
+
+---
+
+## Checkpoint Branch Strategy
+
+Understanding how checkpoint branches work will help you avoid unexpected PR diffs.
+
+### How checkpoint branches are structured
+
+Each checkpoint branch adds **only its own module's files** to `main`:
+
+| Branch                | Files it adds (relative to `main`)                                                          |
+| --------------------- | ------------------------------------------------------------------------------------------- |
+| `checkpoint/module-2` | `.github/copilot-instructions.md`, `.github/dependabot.yml`, `.github/workflows/codeql.yml` |
+| `checkpoint/module-4` | `.github/workflows/security-audit-autofix.yml`                                              |
+| `checkpoint/complete` | All of the above + bonus workflows                                                          |
+
+Checkpoint branches are **not cumulative** — `checkpoint/module-4` does **not** include Module 2 files. Each branch adds only its own module's files on top of `main`.
+
+### Common scenarios
+
+**Scenario 1: You skipped Module 2 entirely and want to catch up for Module 4**
+
+1. First, merge `checkpoint/module-2` → `main` (adds Module 2 files)
+2. Then, merge `checkpoint/module-4` → `main` (adds Module 4 file)
+3. Each PR will show only that module's files
+
+**Scenario 2: You did Module 2 manually, now want to use the checkpoint for Module 4**
+
+1. Just merge `checkpoint/module-4` → `main`
+2. The PR should show only 1 file changed: `.github/workflows/security-audit-autofix.yml`
+3. Your manually-created Module 2 files stay untouched
+
+**Scenario 3: You did Module 2 manually but want to skip ahead to `checkpoint/complete`**
+
+1. Create a PR from `checkpoint/complete` → `main`
+2. It will show all files from all modules — including Module 2 files
+3. Since your Module 2 files already exist on `main`, Git will auto-merge identical content
+4. If the content differs slightly (e.g., extra whitespace), you may see those files in the diff — this is normal, just merge
+
+### If a checkpoint PR shows unexpected files
+
+- **Expected**: the PR shows only that module's files
+- **If it shows extra files**: the checkpoint branch may be out of sync with `main`. Just merge anyway — Git handles duplicates gracefully
+- **If you see merge conflicts**: the file content on `main` differs from the checkpoint version. Resolve by keeping whichever version you prefer
