@@ -51,7 +51,7 @@ jobs:
       secret_verification_result: ${{ steps.validate-secret.outputs.verification_result }}
     steps:
       - name: Setup Scripts
-        uses: github/gh-aw/actions/setup@v0.57.2
+        uses: github/gh-aw/actions/setup@32b3a711a9ee97d38e3989c90af0385aff0066a7 # v0.57.2
         with:
           destination: /opt/gh-aw/actions
       - name: Generate agentic run info
@@ -253,7 +253,7 @@ jobs:
       output_types: ${{ steps.collect_output.outputs.output_types }}
     steps:
       - name: Setup Scripts
-        uses: github/gh-aw/actions/setup@v0.57.2
+        uses: github/gh-aw/actions/setup@32b3a711a9ee97d38e3989c90af0385aff0066a7 # v0.57.2
         with:
           destination: /opt/gh-aw/actions
       - name: Checkout repository
@@ -975,7 +975,7 @@ jobs:
       total_count: ${{ steps.missing_tool.outputs.total_count }}
     steps:
       - name: Setup Scripts
-        uses: github/gh-aw/actions/setup@v0.57.2
+        uses: github/gh-aw/actions/setup@32b3a711a9ee97d38e3989c90af0385aff0066a7 # v0.57.2
         with:
           destination: /opt/gh-aw/actions
       - name: Download agent output artifact
@@ -1031,7 +1031,7 @@ jobs:
           GH_AW_CHECKOUT_PR_SUCCESS: ${{ needs.agent.outputs.checkout_pr_success }}
           GH_AW_INFERENCE_ACCESS_ERROR: ${{ needs.agent.outputs.inference_access_error }}
           GH_AW_GROUP_REPORTS: "false"
-          GH_AW_FAILURE_REPORT_AS_ISSUE: "false"
+          GH_AW_FAILURE_REPORT_AS_ISSUE: "true"
           GH_AW_TIMEOUT_MINUTES: "20"
         with:
           github-token: ${{ secrets.GH_AW_GITHUB_TOKEN || secrets.GITHUB_TOKEN }}
@@ -1049,7 +1049,7 @@ jobs:
           GH_AW_RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
           GH_AW_AGENT_CONCLUSION: ${{ needs.agent.result }}
           GH_AW_NOOP_MESSAGE: ${{ steps.noop.outputs.noop_message }}
-          GH_AW_NOOP_REPORT_AS_ISSUE: "false"
+          GH_AW_NOOP_REPORT_AS_ISSUE: "true"
         with:
           github-token: ${{ secrets.GH_AW_GITHUB_TOKEN || secrets.GITHUB_TOKEN }}
           script: |
@@ -1082,7 +1082,7 @@ jobs:
       process_safe_outputs_temporary_id_map: ${{ steps.process_safe_outputs.outputs.temporary_id_map }}
     steps:
       - name: Setup Scripts
-        uses: github/gh-aw/actions/setup@v0.57.2
+        uses: github/gh-aw/actions/setup@32b3a711a9ee97d38e3989c90af0385aff0066a7 # v0.57.2
         with:
           destination: /opt/gh-aw/actions
       - name: Download agent output artifact
