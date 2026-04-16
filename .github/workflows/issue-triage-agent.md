@@ -86,4 +86,4 @@ For issues that have no labels but DO have an adequate description, still add th
 - Do NOT close any issues.
 - Do NOT modify issue titles or bodies.
 - Process a maximum of 10 issues per run to stay within safe-output limits.
-- If there are no issues to triage, do nothing.
+- If there are no issues to triage (or no issue requires any safe-output action), call the `noop` safe output exactly once with a short message (for example: `"No open unlabeled issues required triage actions in this run."`).
