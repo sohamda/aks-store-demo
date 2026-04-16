@@ -2,10 +2,12 @@
 
 Go to `https://github.com/sohamda/aks-store-demo/settings`:
 
-1. **Settings → Actions → General** → "Allow all actions and reusable workflows" → Save
+1. **Settings → Actions → General** →
+   1. Allow all actions and reusable workflows" → Save
+   2. Issues - Enable
 2. **Settings → Advanced Security** → Enable:
    - Dependabot alerts ✅
-   - Secret scanning ✅
+   - Secret Protection ✅
 3. **Settings → Code security → Code scanning** → Set CodeQL to **default setup**
 4. **Create a PAT_TOKEN secret** (required for Copilot assignment):
    - <https://github.com/settings/tokens> → Fine-grained → select repo
@@ -69,11 +71,13 @@ After 15-30 min:
 2. Go to **Issues** → **New issue**
 3. Title: `[Security] IaC Security Scan`
 4. Body:
+
    ```
    Use the IaCSecurityAgent to scan this repository's infrastructure code and generate a security report.
 
    Scan: infra/terraform/, infra/bicep/, kustomize/, charts/, src/*/Dockerfile, aks-store-*.yaml
    ```
+
 5. Set **Assignees** → `copilot`
 6. Submit → verify Copilot (Agents > Sessions > Active Session) uses the IaCSecurityAgent to generate a security findings report
 7. Check the PR — it should contain a structured security report and updates with findings across Terraform, Bicep, K8s, Helm, and Dockerfiles
@@ -102,6 +106,7 @@ After 15-30 min:
 After testing, reset `main` to the clean state so attendees start fresh.
 
 **Close all test artifacts:**
+
 ```powershell
 # Close all open issues
 gh issue list --state open --json number --jq '.[].number' | ForEach-Object { gh issue close $_ }
@@ -115,6 +120,7 @@ git branch -r | Select-String 'origin/copilot/' | ForEach-Object { $b = $_.ToStr
 ```
 
 **Reset main:**
+
 ```powershell
 git fetch origin
 git checkout main
@@ -130,19 +136,23 @@ git push origin main --force-with-lease
 
 ### What to watch for
 
-| What                             | Expected                    | If it fails                                                                          |
-| -------------------------------- | --------------------------- | ------------------------------------------------------------------------------------ |
-| Dependabot alerts appear         | Within 15-30 min            | Check Settings → Advanced Security → Dependabot is enabled                           |
-| CodeQL runs                      | Triggered by merge to main  | Check Actions tab for the CodeQL workflow run                                        |
-| Security audit workflow triggers | Manual trigger works        | Check Actions → workflow → "Run workflow" button visible                             |
-| Issues auto-created              | 2-3 issues in Issues tab    | Check workflow logs for errors (permissions, jq parsing)                             |
-| `copilot` assignee works         | "Copilot is working" badge  | Needs PAT_TOKEN secret + Copilot Pro/Pro+/Business/Enterprise                        |
-| Copilot creates PRs              | PRs within 5-8 min of issue | Check the issue page for agent status updates                                        |
-| Copilot Code Review              | Review comments on PR       | Add `copilot` as reviewer manually via Reviewers dropdown                            |
-| IaC Security Agent               | Structured security report  | Verify `.github/agents/iac-security-agent.md` is committed and agent name matches    |
-| gh-aw workflow runs              | Issue created with report   | Check engine secret (`COPILOT_GITHUB_TOKEN`), verify `.lock.yml` file exists         |
+| What                             | Expected                    | If it fails                                                                       |
+| -------------------------------- | --------------------------- | --------------------------------------------------------------------------------- |
+| Dependabot alerts appear         | Within 15-30 min            | Check Settings → Advanced Security → Dependabot is enabled                        |
+| CodeQL runs                      | Triggered by merge to main  | Check Actions tab for the CodeQL workflow run                                     |
+| Security audit workflow triggers | Manual trigger works        | Check Actions → workflow → "Run workflow" button visible                          |
+| Issues auto-created              | 2-3 issues in Issues tab    | Check workflow logs for errors (permissions, jq parsing)                          |
+| `copilot` assignee works         | "Copilot is working" badge  | Needs PAT_TOKEN secret + Copilot Pro/Pro+/Business/Enterprise                     |
+| Copilot creates PRs              | PRs within 5-8 min of issue | Check the issue page for agent status updates                                     |
+| Copilot Code Review              | Review comments on PR       | Add `copilot` as reviewer manually via Reviewers dropdown                         |
+| IaC Security Agent               | Structured security report  | Verify `.github/agents/iac-security-agent.md` is committed and agent name matches |
+| gh-aw workflow runs              | Issue created with report   | Check engine secret (`COPILOT_GITHUB_TOKEN`), verify `.lock.yml` file exists      |
 
 The single most important thing to validate: **assigning an issue to `copilot` triggers the Coding Agent**. If that doesn't work:
+
+- Verify your Copilot plan is Pro, Pro+, Business, or Enterprise
+- Verify the `PAT_TOKEN` secret is set (the workflow uses it to assign Copilot via the REST API)
+- Try assigning Copilot manually from the issue UI — if it doesn't appear there, Copilot Coding Agent isn't enabled for your account
 
 - Verify your Copilot plan is Pro, Pro+, Business, or Enterprise
 - Verify the `PAT_TOKEN` secret is set (the workflow uses it to assign Copilot via the REST API)
