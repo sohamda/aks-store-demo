@@ -162,6 +162,16 @@ jobs:
           cat << 'GH_AW_PROMPT_EOF'
           {{#runtime-import .github/workflows/security-report.md}}
           GH_AW_PROMPT_EOF
+          cat << 'GH_AW_PROMPT_EOF'
+
+          ## Required safe-output behavior
+
+          - You must emit at least one safe output in every run.
+          - If you produce a report, call the `create-issue` safe output exactly once with the full report content.
+          - If no issue is needed (for example, no findings), call the `noop` safe output exactly once with a short completion message.
+          - If required capabilities are unavailable, call `missing_tool` with a concise reason.
+          - If required scan data is unavailable, call `missing_data` with a concise reason.
+          GH_AW_PROMPT_EOF
           } > "$GH_AW_PROMPT"
       - name: Interpolate variables and render templates
         uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
@@ -1122,4 +1132,3 @@ jobs:
           name: safe-output-items
           path: /tmp/safe-output-items.jsonl
           if-no-files-found: warn
-

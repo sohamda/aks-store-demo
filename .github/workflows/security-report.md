@@ -41,3 +41,11 @@ Use a structured markdown report with:
 - Summary table (category × severity counts)
 - Detailed findings with file, line, issue, impact, and remediation
 - A "Quick Wins" section listing the top 5 easiest fixes with highest impact
+
+## Required safe-output behavior
+
+- You must emit at least one safe output in every run.
+- If you produce a report, call the `create-issue` safe output exactly once with the full report content.
+- If no issue is needed (for example, no findings), call the `noop` safe output exactly once with a short completion message.
+- If required capabilities are unavailable, call `missing_tool` with a concise reason.
+- If required scan data is unavailable, call `missing_data` with a concise reason.
